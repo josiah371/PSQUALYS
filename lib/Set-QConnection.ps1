@@ -57,41 +57,4 @@ function Close-QualysConnection{
     }
 }
 
-    function Get-QualysScans
-    {
-    $headers = @{"X-Requested-With"="powershell"} 
-     $url = "https://qualysapi.qualys.com/api/2.0/fo/scan/?action=list"
-    $resp = Invoke-WebRequest -Headers $headers -Uri $url -Method Post -WebSession $websession
-    $Global:scan_data = [xml]$resp.Content
-    $scan_data.SCAN_LIST_OUTPUT.Response.SCAN_LIST.SCAN
-    }
-
-
-#Will get the results of the scanning from the API 
-#the results are the actual test results not a report
-#ref is the scan name in the format of scan/nnnnnnnnnnn.nnnnnn
-#Path is where you want to save it
-function Get-QualysScansResults([string]$ref,[string]$Path)
-    {
-    $headers = @{"X-Requested-With"="powershell"} 
-     $url = "https://qualysapi.qualys.com/api/2.0/fo/scan/?action=fetch&scan_ref=$ref"
-    $resp = Invoke-WebRequest -Headers $headers -Uri $url -Method Post -WebSession $websession
-    $resp.Content | Out-File -FilePath $Path
-    }
-
-function Get-QualysScanReport([string]$ref,[string]$Path)
-    {
-    $headers = @{"X-Requested-With"="powershell"} 
-    $url = "https://qualysapi.qualys.com/api/2.0/fo/scan/?action=fetch&scan_ref=$ref&mode=brief&output_format=csv&echo_request=1"
-    $resp = Invoke-WebRequest -Headers $headers -Uri $url -Method Post -WebSession $websession
-    $resp.Content | Out-File -FilePath $Path
-    }
-
-
-function Get-QualysScanRep([string]$ref,[string]$Path)
-    {
-    $headers = @{"X-Requested-With"="powershell"} 
-     $url = "https://qualysapi.qualys.com/api/2.0/fo/scan/?report_type=Scan&outpt_format=csv&report_ref=$ref"
-    $resp = Invoke-WebRequest -Headers $headers -Uri $url -Method Post -WebSession $websession
-    $resp.Content 
-    }
+   
